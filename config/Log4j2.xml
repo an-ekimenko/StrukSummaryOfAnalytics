@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="WARN">
+    <Properties>
+        <!-- Centralized pattern for unified log metrics -->
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n</Property>
+    </Properties>
+
+    <Appenders>
+        <!-- Synchronous Console Output Pipeline -->
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+        
+        <!-- Root Log File Repository Appender -->
+        <File name="FileAppender" fileName="logs/common.log" append="true">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </File>
+    </Appenders>
+    
+    <Loggers>
+        <!-- Suppress verbose third-party operational noise (e.g. Spire.XLS internal streams) -->
+        <Logger name="com.spire" level="WARN"/>
+        <Logger name="org.asynchttpclient" level="WARN"/>
+        
+        <!-- Root Logger Orchestration Layer Routing to Console and File simultaneously -->
+        <Root level="INFO">
+            <AppenderRef ref="ConsoleAppender"/>
+            <AppenderRef ref="FileAppender"/>
+        </Root>
+    </Loggers>
+</Configuration>

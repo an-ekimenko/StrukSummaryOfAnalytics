@@ -1,0 +1,278 @@
+<project xmlns="http://apache.org" 
+         xmlns:xsi="http://w3.org" 
+         xsi:schemaLocation="http://apache.org https://apache.org">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>my.excel</groupId>
+    <artifactId>StrukSummaryOfAnalytics</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>StrukSummaryOfAnalytics</name>
+  
+    <!-- =================================================================== -->
+    <!-- PROPERTIES & VERSION MANAGEMENT                                     -->
+    <!-- =================================================================== -->
+    <properties>
+        <!-- Project Configuration -->
+        <lib.dir>dependencies</lib.dir>
+        <main.class>stk.Main</main.class>
+        <project.build.sourceEncoding>UTF-16LE</project.build.sourceEncoding>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+
+        <!-- Core Engine Versions -->
+        <spire.xls.version>15.5.1</spire.xls.version>
+        <poi.version>5.0.0</poi.version>
+        
+        <!-- Framework & Architecture Versions -->
+        <guice.version>7.0.0</guice.version>
+        <lombok.version>1.18.30</lombok.version>
+        
+        <!-- Logging Infrastructure Versions -->
+        <log4j.bom.version>3.0.0-beta2</log4j.bom.version>
+        <slf4j.version>2.1.0-alpha1</slf4j.version>
+
+        <!-- I/O & Network Client Versions -->
+        <commons.io.version>2.19.0</commons.io.version>
+        <async.httpclient.version>3.0.2</async.httpclient.version>
+        <beloil.crypto.version>0.0.1-SNAPSHOT</beloil.crypto.version>
+
+        <!-- Build Plugin Versions -->
+        <plugin.compiler.version>3.8.0</plugin.compiler.version>
+        <plugin.jar.version>3.2.2</plugin.jar.version>
+        <plugin.assembly.version>3.3.0</plugin.assembly.version>
+        <plugin.dependency.version>3.1.2</plugin.dependency.version>
+        <plugin.resources.version>3.3.1</plugin.resources.version>
+    </properties>
+  
+    <!-- =================================================================== -->
+    <!-- REPOSITORIES                                                        -->
+    <!-- =================================================================== -->
+    <repositories>
+        <repository>
+            <id>com.e-iceblue</id>
+            <name>e-iceblue</name>
+            <url>https://e-iceblue.com</url>
+        </repository>
+    </repositories>
+  
+    <!-- =================================================================== -->
+    <!-- DEPENDENCY MANAGEMENT (BOM ORCHESTRATION)                           -->
+    <!-- =================================================================== -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- Log4j BOM enforces unified versions across all logging sub-modules -->
+            <dependency>
+                <groupId>org.apache.logging.log4j</groupId>
+                <artifactId>log4j-bom</artifactId>
+                <version>${log4j.bom.version}</version> 
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+  
+    <dependencies>
+        <!-- 
+        =======================================================================
+        1. EXCEL PROCESSING ENGINES
+        =======================================================================
+        -->
+        <!-- Spire.XLS (Primary commercial flat-file conversion utility) -->
+        <dependency>
+            <groupId>e-iceblue</groupId>
+            <artifactId>spire.xls</artifactId>
+            <version>${spire.xls.version}</version>
+        </dependency>
+
+        <!-- Apache POI (Java API To Access Microsoft Format Files) -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>${poi.version}</version>
+        </dependency>
+
+        <!-- 
+        =======================================================================
+        2. DEPENDENCY INJECTION FRAMEWORK & UTILITIES
+        =======================================================================
+        -->
+        <!-- Google Guice (Inversion of Control bootstrap core layer) -->
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>${guice.version}</version>
+        </dependency>
+
+        <!-- Lombok (Data Objects Optimization Suite) -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- 
+        =======================================================================
+        3. ENTERPRISE LOGGING INFRASTRUCTURE
+        =======================================================================
+        -->
+        <!-- Log4j2 API (Logging Facade) -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+        </dependency>
+
+        <!-- Log4j2 Core (Logging Engine Implementation) -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+        </dependency>
+
+        <!-- SLF4J API (Simple Logging Facade for Java) -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <!-- Log4j2 to SLF4J Bridge: Routes third-party library SLF4J calls directly into Log4j2 -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j2-impl</artifactId>
+        </dependency>
+    
+        <!-- 
+        =======================================================================
+        4. I/O SUBSYSTEM, CRYPTO & ASYNCHRONOUS NETWORK CLIENTS
+        =======================================================================
+        -->
+        <!-- Custom local module for cryptographic certificate loading -->
+        <dependency>
+            <groupId>by.beloil.crypto</groupId>
+            <artifactId>crypto-cert-loader</artifactId>
+            <version>${beloil.crypto.version}</version>
+        </dependency>
+
+        <!-- Commons I/O (Utility suite wrapping file data streams) -->
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>${commons.io.version}</version>
+        </dependency>
+	
+        <!-- Async HTTP Client (High-performance non-blocking engine) -->
+        <dependency>
+            <groupId>org.asynchttpclient</groupId>
+            <artifactId>async-http-client</artifactId>
+            <version>${async.httpclient.version}</version>
+        </dependency>
+    </dependencies>
+  
+    <!-- =================================================================== -->
+    <!-- BUILD MANAGEMENT & PLUGINS                                          -->
+    <!-- =================================================================== -->
+    <build>
+        <plugins>
+            <!-- Java Compiler Pipeline Configuration -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${plugin.compiler.version}</version> 
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+      
+            <!-- Standard Manifest and Classpath Build Configuration -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${plugin.jar.version}</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                            <!-- Configures relative path lookup to isolation directory -->
+                            <classpathPrefix>../${lib.dir}/</classpathPrefix>
+                            <mainClass>${main.class}</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+      
+            <!-- Dependency Isolation and Extraction Engine -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>${plugin.dependency.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Copies classpaths out of target up to the cluster folder level -->
+                            <outputDirectory>${project.basedir}/../${lib.dir}</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+      
+            <!-- Fat-JAR Assembly Plugin Compilation Layer -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${plugin.assembly.version}</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>${main.class}</mainClass>
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+            </plugin>
+
+            <!-- Workspace Auto-Deployment Resource Pipeline Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>${plugin.resources.version}</version>
+                <executions>
+                    <execution>
+                        <id>copy-jar-to-root</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Targets application deployment home root path -->
+                            <outputDirectory>${project.basedir}</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}</directory>
+                                    <includes>
+                                        <include>${project.artifactId}-${project.version}.jar</include>
+                                    </includes>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
